@@ -74,55 +74,76 @@
 //-------1---------2---------3--------Module Name and Port List------7---------8---------9--------0
 
 module z80_sram(
-    // Generic synchronous single-port RAM interface
-    clk, rst, ce, we, oe, addr, di, do
+	// Generic synchronous single-port RAM interface
+	clk,
+	rst,
+	ce,
+	we,
+	oe,
+	addr,
+	di,
+	do
 );
 
-    //
-    // Default address and data buses width
-    //
-    parameter aw = 15; //number of address-bits
-    parameter dw = 8; //number of data-bits
-
-    //
-    // Generic synchronous single-port RAM interface
-    //
+	//
+	// Default address and data buses width
+	//
+	parameter aw = 15;		// number of address-bits
+	parameter dw = 8;		// number of data-bits
 
 
-//-------1---------2---------3--------Output Ports---------6---------7---------8---------9--------0
-    output [dw-1:0] do;   // output data bus
-
-//-------1---------2---------3--------Input Ports----------6---------7---------8---------9--------0
-    input           clk;  // Clock, rising edge
-    input           rst;  // Reset, active high
-    input           ce;   // Chip enable input, active high
-    input           we;   // Write enable input, active high
-    input           oe;   // Output enable input, active high
-    input  [aw-1:0] addr; // address bus inputs
-    input  [dw-1:0] di;   // input data bus
-//-------1---------2---------3--------Parameters-----------6---------7---------8---------9--------0
-//-------1---------2---------3--------Wires------5---------6---------7---------8---------9--------0
-//-------1---------2---------3--------Registers--5---------6---------7---------8---------9--------0
-//-------1---------2---------3--------Assignments----------6---------7---------8---------9--------0
-//-------1---------2---------3--------State Machines-------6---------7---------8---------9--------0
+	//
+	// Generic synchronous single-port RAM interface
+	//
 
 
-reg  [dw-1:0] mem [(1<<aw)-1:0];    // RAM content
+	//-------1---------2---------3--------Output Ports---------6---------7---------8---------9--------0
 
-// bjp  change  was
-//reg  [aw-1:0] raddr;             // RAM read address
-//wire raddr = addr;
-//
-// Data output drivers
-//
-assign do =  mem[addr];
+	output [dw-1:0] do;		// output data bus
 
 
+	//-------1---------2---------3--------Input Ports----------6---------7---------8---------9--------0
 
-// write operation
-always@(posedge clk)
-    if (ce && we)
-        mem[addr] <=  di;
+	input clk;				// Clock, rising edge
+	input rst;				// Reset, active high
+	input ce;				// Chip enable input, active high
+	input we;				// Write enable input, active high
+	input oe;				// Output enable input, active high
+	input [aw-1:0] addr;	// address bus inputs
+	input [dw-1:0] di;		// input data bus
+
+
+	//-------1---------2---------3--------Parameters-----------6---------7---------8---------9--------0
+
+
+	//-------1---------2---------3--------Wires------5---------6---------7---------8---------9--------0
+
+
+	//-------1---------2---------3--------Registers--5---------6---------7---------8---------9--------0
+
+
+	//-------1---------2---------3--------Assignments----------6---------7---------8---------9--------0
+
+
+	//-------1---------2---------3--------State Machines-------6---------7---------8---------9--------0
+
+
+	reg [dw-1:0] mem [(1<<aw)-1:0];		// RAM content
+
+	// bjp  change  was
+//	reg  [aw-1:0] raddr;				// RAM read address
+//	wire raddr = addr;
+
+	//
+	// Data output drivers
+	//
+	assign do = mem[addr];
+
+
+	// write operation
+	always @(posedge clk)
+		if (ce && we)
+			mem[addr] <= di;
 
 
 
